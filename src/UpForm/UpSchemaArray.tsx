@@ -178,11 +178,11 @@ export default class UpSchemaArray extends React.Component<UpSchemaArrayProps, U
     addElement = () => {
         let values = this.state.items;
         if (values.some(value => isEmptyValue(value) || value === this.props.maxValue)) return;
-
+        let newValues = [...values, this.nextValue(values)] 
         this.setState({
-            items: [...values, this.nextValue(values)]
+            items: newValues
         });
-        this.props.onChange(eventFactory(this.props.name, values), values, null);
+        this.props.onChange(eventFactory(this.props.name, newValues), newValues, null);
     };
 
     removeElement = () => {
