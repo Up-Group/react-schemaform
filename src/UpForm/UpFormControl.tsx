@@ -11,6 +11,7 @@ export interface BaseProps<BaseType> {
   onChange: (e, arg: BaseType, error: string) => void;
   showError: boolean;
   value: BaseType;
+  dependencyValues?: { [key: string]: any };
   translate : (text: string) => any,
   onSearchButtonClick?: (text: string) => any;
   floatingLabel?: string

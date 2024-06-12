@@ -228,7 +228,17 @@ export default class UpSchemaObject extends React.Component<
             const property = propertiesToShow[propertyName];
 
             const value = this.props.value == null ? null : this.props.value[propertyName];
-
+            
+            let dependencyValues: object = {};
+            if (propertiesToShow[propertyName].entitySource?.dependencyProperties != null && this.props.value != null) {
+                for (let dependencyPropertyName of propertiesToShow[propertyName].entitySource.dependencyProperties) {
+                    dependencyValues[dependencyPropertyName] = 
+                        typeof this.props.value[dependencyPropertyName] === 'object' && this.props.value[dependencyPropertyName] != null ?
+                        this.props.value[dependencyPropertyName][dependencyPropertyName] :
+                        this.props.value[dependencyPropertyName];
+                }
+            }
+            
             const additionalProps = property.props ;
             let componentType = null ;
             if(additionalProps && typeof additionalProps !== "string") {
@@ -252,6 +262,7 @@ export default class UpSchemaObject extends React.Component<
                     <UpSchemaFormComponentSelector
                         value={parsedValue ? parsedValue : value}
                         values={this.props.value}
+                        dependencyValues={dependencyValues}
                         name={propertyName}
                         showError={this.props.showError}
                         isRequired={this.isRequired(propertyName)}

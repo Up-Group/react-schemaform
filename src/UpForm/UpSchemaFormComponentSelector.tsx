@@ -10,6 +10,7 @@ import { UpFormContextConsumer } from './UpFormContext';
 export interface UpSchemaFormComponentSelectorProps {
     value: any;
     values?: { [key: string]: any };
+    dependencyValues?: { [key: string]: any };
     schema: JsonSchema;
     node: string;
     name?: string;
@@ -138,6 +139,7 @@ export default class UpSchemaFormComponentSelector extends React.Component<
                         this.props.isReadOnly,
                         floatingLabel,
                         this.props.values,
+                        this.props.dependencyValues,
                         additionalProps
                     );
                 } catch(e) {
