@@ -40,6 +40,7 @@ export default class EntityField<Type> extends UpFormControl<Type, {}> {
         errorDisplayMode={"inline"}
         default={null}
         value={this.getValue()}
+        dependencyValues={this.props.dependencyValues}
         returnType={this.schema.entitySource && this.schema.entitySource.returnType ?  this.schema.entitySource.returnType : "full"}
         isRequired={this.props.isRequired}
         multiple={this.isArray}

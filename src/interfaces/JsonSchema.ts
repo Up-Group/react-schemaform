@@ -75,6 +75,7 @@ export interface JsonSchema {
   enumNames?: string[];
   hiddenEnumValues?: string[];
   entitySource?: {
+    dependencyProperties?: string[];
     id: string;
     name: string;
     text: string;

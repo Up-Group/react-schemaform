@@ -121,6 +121,7 @@ export default class ComponentRegistery {
     isReadOnly?: (property: string) => boolean,
     floatingLabel?: string,
     values?: { [key: string]: any },
+    dependencyValues?: { [key: string]: any },
     additionalProps?: { [key: string]: any }
   ) {
 
@@ -137,6 +138,7 @@ export default class ComponentRegistery {
 
     var props = {
       value,
+      dependencyValues,
       name,
       showError: showError,
       onChange: onChange,
