@@ -301,6 +301,7 @@ export default class UpSchemaObject extends React.Component<
                                             elements={group[element].map(element => ({
                                                 colspan: element.colspan,
                                                 name: element.name,
+                                                breakAfter: element.breakAfter,
                                                 render: elements[element.name]
                                             }))} />
                                     </UpFormGroup>
@@ -313,6 +314,7 @@ export default class UpSchemaObject extends React.Component<
                                             elements={group[element].map(element => ({
                                                 colspan: element.colspan,
                                                 name: element.name,
+                                                breakAfter: element.breakAfter,
                                                 render: elements[element.name]
                                             }))} />
                                     );
@@ -375,29 +377,59 @@ interface SchemaRowProps {
     rowSpacing: number;
     withHR: boolean;
     title: string;
-    elements: { colspan: number, name: string, render: React.ReactNode }[];
+    elements: { colspan: number, name: string, breakAfter: boolean, render: React.ReactNode }[];
 }
 
 const SchemaRow: React.FunctionComponent<SchemaRowProps> = ({ rowSpacing, withHR, title, elements }) => {
-    return <UpRow style={{ marginBottom: `${rowSpacing || 10}px` }}>
-        {withHR ? <hr /> : null}
-        {title == null ? (
-            ""
-        ) : (
+
+    function getRows<
+        T extends { colspan: number, name: string, breakAfter: boolean, render: React.ReactNode }
+    >(items: T[]) {
+        return items.reduce((rows, viewModel) => {
+            let currentRow;
+            if (rows.length === 0) {
+                currentRow = [];
+                rows.push(currentRow);
+            } else {
+                currentRow = rows[rows.length - 1];
+            }
+
+            currentRow.push(viewModel);
+
+            if (viewModel.breakAfter) {
+                currentRow = [];
+                rows.push(currentRow);
+            }
+
+            return rows;
+        }, []);
+    }
+
+    let rows = getRows(elements)
+    return (
+        <div style={{ marginBottom: `${rowSpacing || 10}px` }}>
+            {withHR ? <hr /> : null}
+            {title == null ? (
+                ""
+            ) : (
                 <h4>{title}</h4>
             )}
-        {elements.map((element, index) => {
-            return (
-                <UpCol
-                    key={index}
-                    xs={24}
-                    sm={element.colspan > 12 ? element.colspan : 12}
-                    md={element.colspan}
-                    lg={element.colspan}
-                >
-                    {element.render}
-                </UpCol>
-            );
-        })}
-    </UpRow>
+            {rows.map(row =>
+                <UpRow >
+                    {row.map((element, index) => {
+                        return (
+                            <UpCol
+                                key={index}
+                                xs={24}
+                                sm={element.colspan > 12 ? element.colspan : 12}
+                                md={element.colspan}
+                                lg={element.colspan}
+                            >
+                                {element.render}
+                            </UpCol>
+                        );
+                    })}
+                </UpRow>)}
+        </div>
+    )
 }
