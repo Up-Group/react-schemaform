@@ -407,7 +407,7 @@ const SchemaRow: React.FunctionComponent<SchemaRowProps> = ({ rowSpacing, withHR
 
     let rows = getRows(elements)
     return (
-        <div style={{ marginBottom: `${rowSpacing || 10}px` }}>
+        <UpRow style={{ marginBottom: `${rowSpacing || 10}px` }}>
             {withHR ? <hr /> : null}
             {title == null ? (
                 ""
@@ -415,7 +415,7 @@ const SchemaRow: React.FunctionComponent<SchemaRowProps> = ({ rowSpacing, withHR
                 <h4>{title}</h4>
             )}
             {rows.map(row =>
-                <UpRow >
+                <UpRow fullRowLayout={true}> 
                     {row.map((element, index) => {
                         return (
                             <UpCol
@@ -430,6 +430,6 @@ const SchemaRow: React.FunctionComponent<SchemaRowProps> = ({ rowSpacing, withHR
                         );
                     })}
                 </UpRow>)}
-        </div>
+        </UpRow>
     )
 }
