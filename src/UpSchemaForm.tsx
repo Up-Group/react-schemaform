@@ -257,11 +257,15 @@ export default class UpSchemaForm extends React.Component<
     let fullNestedPropertyName:string = nodes.join(".")
     let prop = nodes.shift();
     
-    if(data.hasOwnProperty(fullNestedPropertyName)) {
+    if (data.hasOwnProperty(fullNestedPropertyName)) {
       data[fullNestedPropertyName] = value;
       return data;
     }
-    if (nodes.length != 0 && data.hasOwnProperty(prop) && typeof data[prop] === "object") {
+    if (nodes.length === 0) {
+      data[prop] = value;
+      return data;
+    }
+    if (data.hasOwnProperty(prop) && typeof data[prop] === "object") {
       data[prop] = this.assignValue(data[prop], nodes, value);
       return data;
     } 
